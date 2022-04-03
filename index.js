@@ -1,13 +1,16 @@
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
+console.log('enviroment: ',process.env.NODE_ENV)
 require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
+
+
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: process.env.NODE_ENV === 'development'? 'localhost' : '18.233.171.245',
   user: 'root',
   password: process.env.MYSQL_PASS,
   database:'excel_rows'
@@ -67,4 +70,4 @@ app.post('/create-table',  async (req,res) => {
 })
 
 
-app.listen(3001, () => console.log('listening on port 3001'))
+app.listen(process.env.PORT || 3001, () => console.log('listening on port 3001'))
