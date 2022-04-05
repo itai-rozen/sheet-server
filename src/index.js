@@ -1,13 +1,13 @@
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
-console.log('enviroment: ',process.env.NODE_ENV)
+const serverless = require('serverless-http')
 require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
-
+const router = express.Router()
 
 const db = mysql.createConnection({
   host:  'localhost',
@@ -36,11 +36,11 @@ const sqlQuery = query => {
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});` 
 
-app.get('/', (req,res) => {
-  res.send('hi')
+router.get('/', (req,res) => {
+  res.json({'yo':'hi'})
 })
 
-app.post('/', (req,res) => {
+router.post('/', (req,res) => {
   console.log('/')
   // const query = ` ;`
   const { body } = req
@@ -49,14 +49,14 @@ app.post('/', (req,res) => {
   res.end()
 })
 
-app.post('/invalid', (req,res) => {
+router.post('/invalid', (req,res) => {
   const { body } = req
   const query = getSqlInsertQuery('invalid_rows', body)
   sqlQuery(query)
   res.end()
 })
 
-app.post('/create-table',  async (req,res) => {
+router.post('/create-table',  async (req,res) => {
   console.log('/create-table')
   const { body } = req
   console.log('body : ',body)
@@ -73,5 +73,7 @@ app.post('/create-table',  async (req,res) => {
   res.end()
 })
 
+app.use('/.netlify/functions/index', router)
 
-app.listen(process.env.PORT || 3001, () => console.log('listening on port 3001'))
+module.exports.handler = serverless(app)
+// app.listen(process.env.PORT || 3001, () => console.log('listening on port 3001'))
