@@ -10,7 +10,7 @@ app.use(express.urlencoded({extended : true}))
 
 
 const db = mysql.createConnection({
-  host: process.env.NODE_ENV === 'development'? 'localhost' : '18.233.171.245',
+  host:  'localhost',
   user: 'root',
   password: process.env.MYSQL_PASS,
   database:'excel_rows'
@@ -35,6 +35,10 @@ const sqlQuery = query => {
 } 
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});` 
+
+app.get('/', (req,res) => {
+  res.send('hi')
+})
 
 app.post('/', (req,res) => {
   console.log('/')
