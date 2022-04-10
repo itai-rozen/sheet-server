@@ -10,10 +10,10 @@ app.use(express.urlencoded({extended : true}))
 const router = express.Router()
 
 const db = mysql.createConnection({
-  host:  'localhost',
-  user: 'root',
+  host:  'bcdkug90fl2rqogiro2w-mysql.services.clever-cloud.com',
+  user: 'uyym7bromvb9voj1',
   password: process.env.MYSQL_PASS,
-  database:'excel_rows'
+  database:'bcdkug90fl2rqogiro2w'
 })
 
 db.connect(err => {
@@ -46,7 +46,7 @@ router.post('/', (req,res) => {
   const { body } = req
   const query = getSqlInsertQuery('all_rows', body)
   sqlQuery(query)
-  res.end()
+  res.send('success')
 })
 
 router.post('/invalid', (req,res) => {
