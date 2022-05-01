@@ -8,7 +8,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 const router = express.Router()
-
 const db = mysql.createConnection({
   host:  'bcdkug90fl2rqogiro2w-mysql.services.clever-cloud.com',
   user: 'uyym7bromvb9voj1',
@@ -21,14 +20,12 @@ db.connect(err => {
   console.log('connected sql')
 })
 
-const init = () => {
 
-}
 
 const sqlQuery = query => {
     console.log('query: ',query)
     const res = db.query(query, (err, results) => {
-      if (err) console.log('Error: ',err.sqlMessage)
+      if (err) console.log('Error: ',err)
       return results
     })
     return res
@@ -36,15 +33,14 @@ const sqlQuery = query => {
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});` 
 
-router.get('/', (req,res) => {
-  res.json({'yo':'hi'})
-})
+
 
 router.post('/', (req,res) => {
   console.log('/')
   // const query = ` ;`
   const { body } = req
-  const query = getSqlInsertQuery('all_rows', body)
+  console.log('body : ',body.toString())
+  const query = getSqlInsertQuery('all_rows', JSON.parse(body.toString()))
   sqlQuery(query)
   res.send('success')
 })
@@ -59,7 +55,6 @@ router.post('/invalid', (req,res) => {
 router.post('/create-table',  async (req,res) => {
   console.log('/create-table')
   const { body } = req
-  console.log('body : ',body)
   const query1 = "DROP TABLE IF EXISTS all_rows,invalid_rows,valid_rows;"
   const query2 = `CREATE TABLE all_rows(${body.map(key => key !== 'rowNum'? `${key} text` : `${key} int PRIMARY KEY NOT NULL`).join()} );`
   const query3 = `CREATE TABLE invalid_rows(rowNum INT,problem VARCHAR(255),value TEXT,FOREIGN KEY (rowNum) REFERENCES all_rows(rowNum) );`
