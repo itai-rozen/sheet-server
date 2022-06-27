@@ -10,11 +10,11 @@ app.use(express.urlencoded({ extended: true }))
 const router = express.Router()
 
  const db = mysql.createConnection({
-    host: 'nl-srv-web216.main-hosting.eu',
-    user: 'u636091749_itai_the_man',
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASS,
-    database: 'u636091749_testim4itai',
-    port: 3306
+    database: process.env.MYSQL_DB,
+    port: process.env.PORT
   })
 
 
