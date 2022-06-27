@@ -1,7 +1,7 @@
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
-const serverless = require('serverless-http')
+// const serverless = require('serverless-http')
 require('dotenv').config()
 const app = express()
 app.use(cors())
@@ -19,10 +19,6 @@ const router = express.Router()
   })
 
 
- db.connect(err => {
-  if (err) console.log('error: ', err)
-  console.log('connected sql')
-})
 
 
 
@@ -45,7 +41,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  console.log('/')
   const { body } = req
   console.log('body : ', body.toString())
   const query = getSqlInsertQuery('invites', JSON.parse(body.toString()))
@@ -57,7 +52,12 @@ router.post('/', (req, res) => {
 
 
 
-app.use('/.netlify/functions/index', router)
+// app.use('/.netlify/functions/index', router)
+app.use('/', router)
 
-module.exports.handler = serverless(app)
-// app.listen(process.env.PORT || 3001, () => console.log('listening on port 3001'))
+// module.exports.handler = serverless(app)
+app.listen(process.env.PORT || 3001, () =>  db.connect(err => {
+  if (err) console.log('error: ', err)
+  console.log('connected sql')
+})
+)
