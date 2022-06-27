@@ -9,7 +9,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const router = express.Router()
 
-
  const db = mysql.createConnection({
     host: 'nl-srv-web216.main-hosting.eu',
     user: 'u636091749_itai_the_man',
@@ -33,18 +32,15 @@ const sqlQuery = query => {
 }
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});`
-app.get('/', (req,res) => res.send('hi'))
-router.get('/', (req, res) => {
+app.get('/', (req, res) => {
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
     res.send(results)
   })
 })
 
-router.post('/', (req, res) => {
+app.post('/', (req, res) => {
   const { body } = req
-  console.log('body : ', body.toString())
   const query = getSqlInsertQuery('invites', JSON.parse(body.toString()))
-  console.log('query: ',query)
   sqlQuery(query)
   res.send('success')
 })
@@ -53,7 +49,6 @@ router.post('/', (req, res) => {
 
 
 // app.use('/.netlify/functions/index', router)
-app.use('/', router)
 
 // module.exports.handler = serverless(app)
 app.listen(process.env.PORT || 3001, () =>  db.connect(err => {
