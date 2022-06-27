@@ -33,7 +33,7 @@ const sqlQuery = query => {
 }
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});`
-
+app.get('/', (req,res) => res.send('hi'))
 router.get('/', (req, res) => {
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
     res.send(results)
