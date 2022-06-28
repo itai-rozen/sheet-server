@@ -17,6 +17,11 @@ const router = express.Router()
     port: process.env.PORT
   })
 
+  console.log(process.env.MYSQL_HOST.slice(0,6)+'...')
+  console.log(process.env.MYSQL_USER.slice(0,6)+'...')
+  console.log(process.env.MYSQL_DB.slice(0,6)+'...')
+  console.log(process.env.MYSQL_PASS.slice(0,6)+'...')
+
 
 
 
@@ -55,7 +60,7 @@ app.post('/', (req, res) => {
 
 // module.exports.handler = serverless(app)
 app.listen(process.env.PORT || 3001, () =>  db.connect(err => {
-  if (err) console.log('error: ', err)
+  if (err) throw ('error @connect: ', err)
   console.log('connected sql')
 })
 )
