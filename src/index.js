@@ -36,7 +36,8 @@ app.get('/test', (req,res) => res.send('testing!'))
 app.get('/invites', (req, res) => {
   console.log('entered app.get')
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
-    res.send(results)
+    if (err) res.send(err.message)
+    else res.send(results)
   })
 })
 
