@@ -7,23 +7,14 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-const router = express.Router()
 
  const db = mysql.createConnection({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DB,
-    port: process.env.PORT
+    port: process.env.MYSQL_PORT
   })
-
-  console.log(process.env.MYSQL_HOST.slice(0,6)+'...')
-  console.log(process.env.MYSQL_USER.slice(0,6)+'...')
-  console.log(process.env.MYSQL_DB.slice(0,6)+'...')
-  console.log(process.env.MYSQL_PASS.slice(0,6)+'...')
-
-
-
 
 
 const sqlQuery = query => {
@@ -59,8 +50,9 @@ app.post('/', (req, res) => {
 // app.use('/.netlify/functions/index', router)
 
 // module.exports.handler = serverless(app)
-app.listen(process.env.PORT || 3001, () =>  db.connect(err => {
+const port = process.env.PORT || 3001 
+app.listen(port, () =>  db.connect(err => {
   if (err) throw ('error @connect: ', err)
-  console.log('connected sql')
+  console.log('connected sql, listening on port: ',port)
 })
 )
