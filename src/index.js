@@ -29,7 +29,6 @@ const sqlQuery = query => {
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});`
 
-app.get('/', (req,res) => res.end())
 app.get('/invites', (req, res) => {
   console.log('entered app.get')
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
