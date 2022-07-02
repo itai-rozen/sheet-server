@@ -37,7 +37,7 @@ app.get('/invites', (req, res) => {
   })
 })
 
-app.get('/*', (req,res) => {
+app.get('/:event_hash', (req,res) => {
   res.sendFile('https://sheet-validator.netlify.app/index.html')
 })
 
