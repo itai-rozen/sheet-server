@@ -37,9 +37,7 @@ app.get('/invites', (req, res) => {
   })
 })
 
-app.get('/:event_hash', (req,res) => {
-  res.end()
-})
+
 
 app.post('/', (req, res) => {
   const { body } = req
