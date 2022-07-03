@@ -29,13 +29,14 @@ const sqlQuery = query => {
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});`
 
-app.get('/invites', (req, res) => {
+app.get('https://sheet-validator.netlify.app/invites', (req, res) => {
   console.log('entered app.get')
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
     if (err) res.send(err.message)
     else res.send(results)
   })
 })
+app.get('http://sheet-validator-server.eu-west-1.elasticbeanstalk.com/', (req,res) => res.send('from server url'))
 
 app.post('/', (req, res) => {
   const { body } = req
