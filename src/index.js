@@ -37,7 +37,8 @@ app.get('https://sheet-validator.netlify.app/invites', (req, res) => {
   })
 })
 app.get('http://sheet-validator-server.eu-west-1.elasticbeanstalk.com/', (req,res) => res.send('from server url'))
-
+app.get('/', (req,res) => res.send('yo from root'))
+app.get('/test', (req,res) => res.send('yo from test'))
 app.post('/', (req, res) => {
   const { body } = req
   const query = getSqlInsertQuery('invites', JSON.parse(body.toString()))
