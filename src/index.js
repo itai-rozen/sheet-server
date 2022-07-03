@@ -36,7 +36,10 @@ app.get('https://sheet-validator.netlify.app/invites', (req, res) => {
     else res.send(results)
   })
 })
-app.get('http://sheet-validator-server.eu-west-1.elasticbeanstalk.com/', (req,res) => res.send('from server url'))
+app.get('http://sheet-validator-server.eu-west-1.elasticbeanstalk.com/*', (req,res) =>{
+  res.sendFile('https://sheet-validator.netlify.app/index.html')
+} 
+)
 app.get('/', (req,res) => res.send('yo from root'))
 app.get('/test', (req,res) => res.send('yo from test'))
 app.post('/', (req, res) => {
