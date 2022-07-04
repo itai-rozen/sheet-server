@@ -46,7 +46,7 @@ app.get('/invites', (req, res) => {
 // })
 app.post('/', (req, res) => {
   const { body } = req
-  const query = getSqlInsertQuery('invites', body)
+  const query = getSqlInsertQuery('invites', JSON.parse(body.toString()))
   sqlQuery(query)
   res.send('success')
 })
