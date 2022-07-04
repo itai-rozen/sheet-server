@@ -29,22 +29,24 @@ const sqlQuery = query => {
 
 getSqlInsertQuery = (tableName, obj) => `INSERT INTO ${tableName} (${Object.keys(obj).join()}) VALUES (${Object.values(obj).map(val => `'${val}'`).join()});`
 
-app.get('https://sheet-validator.netlify.app/invites', (req, res) => {
+app.get('/invites', (req, res) => {
   console.log('entered app.get')
   db.query("SELECT * FROM invites limit 1;", (err,results) => {
     if (err) res.send(err.message)
     else res.send(results)
   })
 })
-app.get('http://sheet-validator-server.eu-west-1.elasticbeanstalk.com/*', (req,res) =>{
-  res.sendFile('https://sheet-validator.netlify.app/index.html')
-} 
-)
-app.get('/', (req,res) => res.send('yo from root'))
-app.get('/test', (req,res) => res.send('yo from test'))
+
+// app.get('/', (req,res) => res.send('yo from root'))
+// app.get('/test', (req,res) => res.send('yo from test'))
+// app.post('/test', (req,res) => {
+//   const { body } = req
+//   console.log('body: ',body)
+//   res.send('ok')
+// })
 app.post('/', (req, res) => {
   const { body } = req
-  const query = getSqlInsertQuery('invites', JSON.parse(body.toString()))
+  const query = getSqlInsertQuery('invites', body)
   sqlQuery(query)
   res.send('success')
 })
